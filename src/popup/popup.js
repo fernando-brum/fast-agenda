@@ -1,23 +1,21 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const titleEl = document.getElementById('title');
-    const datetimeEL = document.getElementById('datetime');
+    const datetimeEl = document.getElementById('datetime');
     const urlEl = document.getElementById('url');
     const notesEl = document.getElementById('notes');
     const addBtn = document.getElementById('add-event');
     const cancelBtn = document.getElementById('cancel-event');
-    const eventBtn = document.getElementById('event-list');
+    const eventList = document.getElementById('event-list');
+    const formatDatetime = (datetimeStr) => {
+        const date = new Date(datetimeStr);
+        return `${date.toLocaleDateString()} às ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    };
 
     //Carregando a URL atual da aba
     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
         urlEl.value = tab.url;
     });
 
-    //carregando um texto selecionado
-    chrome.tabs.executeScript({ code: "window.getSelection().getSelection().toString();" }, selection => {
-        if (selection && selection[0]) {
-            notesEl.value = selection[0];
-        }
-    });
 
     //carregando os eventos existentes
     const loadEvents = async () => {
@@ -30,9 +28,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 li.innerHTML = `
                 <strong>${event.title}</strong><br>
                 <a href="${event.url}" target="_blank">${event.url}</a><br>
-                <small>${event.datetime}</small><br>
-                <p>${event.notes}</p>
-                <button data-index="${index}">X</button>
+                <small>${formatDatetime(event.datetime)}</small><br>
+                <div class="note-content">${event.notes.replace(/\n/g, '<br>')}</div>
+                <button class="delete-btn" data-index="${index}" title="Remover evento">&#x2715;</button>
                 `;
                 eventList.appendChild(li);
             });
@@ -58,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             titleEl.value = '';
             datetimeEl.value = '';
-            notesEl.values = '';
+            notesEl.value = '';
 
             await loadEvents();
     })

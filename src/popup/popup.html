@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fast Agenda</title>
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <h1>Fast Agenda</h1>
+    <h1 class="section-title">Fast Agenda</h1>
     <div id="event-form">
         <input type="text" id="title" placeholder="Título do evento" required />
         <input type="text" id="url" placeholder="URL" />
         <input type="datetime-local" id="datetime">
-        <textarea id="notes" placeholder="Selecione o texto ou digite aqui..."></textarea>
+        <textarea id="notes" placeholder="Digite aqui observações e outras anotações importantes..."></textarea>
         <div class="buttons">
             <button id="add-event">Adicionar</button>
             <button id="cancel-event">Cancelar</button>
         </div>
     </div>
-    <h2>&#x1F4C5; Eventos Salvos</h2>
+    <h2 class="section-title">&#x1F4C5; Eventos Salvos</h2>
     <ul id="event-list"></ul>
     <script src="popup.js"></script>
 </body>
